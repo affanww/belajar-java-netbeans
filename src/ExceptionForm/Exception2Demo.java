@@ -5,6 +5,7 @@
  */
 package ExceptionForm;
 
+import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -151,27 +152,41 @@ public class Exception2Demo extends javax.swing.JFrame {
 
     private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
         // TODO add your handling code here:
-        if(txtHarga.getText().isEmpty() || txtJml.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Error: harga/banyak wajib diisi!", "ERROR", 
-                    JOptionPane.WARNING_MESSAGE);
+        String inputHarga, inputBanyak;
+        
+        inputHarga = txtHarga.getText();
+        inputBanyak = txtJml.getText();
+        
+        if(inputHarga.isEmpty() || inputBanyak.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Error: harga/banyak wajib diisi!", 
+                    "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-        long harga = Long.parseLong(txtHarga.getText());
-        long banyak = Long.parseLong(txtJml.getText());
-        
-        if((harga < 0) || (banyak < 0)){
-            JOptionPane.showMessageDialog(null, "Error: harga/banyak tidak boleh negatif!", "ERROR", 
+        if(!CheckNumber.isLong(inputHarga) || !CheckNumber.isLong(inputBanyak)){
+            JOptionPane.showMessageDialog(null, "Error: harga/banyak harus berupa angka!", "Error", 
                     JOptionPane.WARNING_MESSAGE);
+           return;
+        }
+        if(inputHarga.length() > 11 || inputBanyak.length() > 11) {
+            JOptionPane.showMessageDialog(null, "Error: digit angka harus < 13!",
+                    "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        long total = harga * banyak;
-        txtTotal.setText(String.valueOf(total));
-        } catch (NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "Error: harga/banyak harus berupa angka!", "ERROR", 
-                    JOptionPane.WARNING_MESSAGE);
+        
+        
+        long harga, banyak, total;
+        harga = Long.parseLong(txtHarga.getText());
+        banyak = Long.parseLong(txtJml.getText());
+        
+        if((harga <0) || (banyak <0)) {
+            JOptionPane.showMessageDialog(null, "Error: harga/banyak tidak dapat negatif!",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+            return;
         }
         
+        total = harga * banyak;
+        DecimalFormat df = new DecimalFormat("#,###");
+        txtTotal.setText("Rp. " + df.format(total));
     }//GEN-LAST:event_btnHitungActionPerformed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
